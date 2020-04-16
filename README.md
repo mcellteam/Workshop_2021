@@ -1,6 +1,7 @@
-# Workshop 2019
-## Repository for models, descriptions, and code to be used for the 2019 Workshop.
+# Workshop 2020
+## Repository for models, descriptions, and code to be used for the 2020 Workshop.
 
+### Note that the following links have not been updated from the 2019 Workshop:
 * [Final agenda](https://docs.google.com/document/d/1LWj4nWpN9DQXcbmkdRHLM3NcIQpZi1vK-eVuUm3SqTA/edit?usp=sharing).
 * [Introductory slides](https://www.dropbox.com/s/qxxjsjkbvyqdomz/CMW2019-MMBioSIntro.pptx?dl=0)
 * Join the workshop slack channel [here](https://join.slack.com/t/cmw2019/shared_invite/enQtNjMwNzUwNjQzNjQ4LTliMzMwMTAxODRmYzUwZGE2NzYyZTE0Mjg1NjRkNzU4NDk3MDllNDUyYTEzMGY3MTA3ZTlmOTAzN2ZhYWQwMjY).
