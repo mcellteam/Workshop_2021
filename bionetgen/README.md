@@ -4,17 +4,13 @@ BioNetGen is software for rule-based modeling of biochemical systems. In the wor
 
 ## Requirements
 
-If you are using your own laptop, install RuleBender 2.3.0, which is available at http://bionetgen.org. If you are attending the workshop in person you will be able to use one of the computers in the lab and don't need to install the software beforehand.
+If you are using your own laptop, install RuleBender 2.3.2, which is available at http://bionetgen.org. Please install RuleBender before the start of the workshop.
 
 ## Workshop materials
 
 Day 1
-* [Basic workflow for rule-based modeling](https://www.dropbox.com/s/gyjyv7dm0ndpd7p/RBM-workflow.pptx?dl=0)
-* [Organelle transport model](organelle_transport.bngl)
-
-Day 2
-* [Slides for introduction to rule-based modeling](https://www.dropbox.com/s/dzth69pivzirzr9/MMBios2019Workshop-RBM-overview.pdf?dl=0).
-* [Jupyter notebook for analyzing BioNetGen output](Workshop2019_Notebook.ipynb)
+*
+*
 
 Reference
 * [BioNetGen website](http://bionetgen.org)
