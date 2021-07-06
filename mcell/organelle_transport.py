@@ -98,6 +98,9 @@ model.load_bngl(bngl_file, './react_data/seed_' + str(SEED).zfill(5) + '/')
  
 
 # ---- configuration ----
+# use BNGL units for bimolecular reaction rates
+model.config.use_bng_units = True
+
 model.config.time_step = TIME_STEP
 model.config.seed = SEED
 model.config.total_iterations = ITERATIONS 

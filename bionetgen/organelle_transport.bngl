@@ -10,18 +10,14 @@ begin parameters
   vol_O2M 1*d     # [um^3] Effective volume of organelle 2 membrane
   vol_O2V 0.0335 # [um^3] Effective volume of organelle 2
     
-  # Handling of unit conversion for MCell 
-  VOL_RXN 1 # Value 1 is used when BioNetGen loads this file 
-  MCELL_REDEFINE_VOL_RXN NA_um3 # When MCell loads this file VOL_RXN is NA_um3
-    
-  kp_AB 1e9/NA_um3*VOL_RXN # BioNetGen: 1/M*1/s -> um^3/s, MCell: 1/M*1/s -> um^3/s -> 1/M*1/s      
-  kp_AT1 1e8/NA_um3*VOL_RXN
+  kp_AB 1e9/NA_um3 # 1/M*1/s -> um^3/s      
+  kp_AT1 1e8/NA_um3
   km_AT1 10
   k_AT1trans 1e5
-  kp_CT1 1e8/NA_um3*VOL_RXN
+  kp_CT1 1e8/NA_um3
   km_CT1 10
   k_CT1trans 1e5
-  kp_CT2 1e8/NA_um3*VOL_RXN
+  kp_CT2 1e8/NA_um3
   km_CT2 10
   k_DT2trans 1e5
   
