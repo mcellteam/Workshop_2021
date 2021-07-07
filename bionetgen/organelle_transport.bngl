@@ -33,6 +33,9 @@ begin parameters
   MCELL_DIFFUSION_CONSTANT_2D_CT1 D_SURF
   MCELL_DIFFUSION_CONSTANT_2D_T2 D_SURF
   MCELL_DIFFUSION_CONSTANT_2D_CT2 D_SURF
+  
+  # number of iterations for MCell
+  ITERATIONS 10000
 end parameters
 
 begin compartments
