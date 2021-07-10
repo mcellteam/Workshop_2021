@@ -8,9 +8,7 @@ If you are using your own laptop, install [VS Code with BioNetGen extension](htt
 
 ## Workshop materials
 
-Day 1
-*
-*
+Check the relevant folders for presentation materials, models, and notebooks and refresh regularly to make sure that you have the latest versions.
 
 Reference
 * [BioNetGen website](http://bionetgen.org)
