@@ -4,7 +4,7 @@ BioNetGen is software for rule-based modeling of biochemical systems. In the wor
 
 ## Requirements
 
-If you are using your own laptop, install RuleBender 2.3.2, which is available at http://bionetgen.org. Please install RuleBender before the start of the workshop.
+If you are using your own laptop, install [VS Code with BioNetGen extension](https://bng-vscode-extension.readthedocs.io/en/latest/).
 
 ## Workshop materials
 
