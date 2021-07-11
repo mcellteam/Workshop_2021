@@ -1,0 +1,20 @@
+begin model
+
+begin parameters
+  N 1.0e2
+  I0 1
+  R0 2.5
+  g  0.33
+  b  g*R0/N
+end parameters
+
+begin species
+end species
+
+begin observables
+end observables
+
+begin reaction rules
+end reaction rules
+
+end model
