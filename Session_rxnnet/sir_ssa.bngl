@@ -3,7 +3,7 @@ begin model
 begin parameters
   N 1.0e2
   I0 1
-  R0 1.1
+  R0 1.2
   g  0.33
   b  g*R0/N
 end parameters
@@ -28,4 +28,7 @@ end model
 
 # Actions go here
 generate_network({overwrite=>1})
-simulate({method=>"ode",t_end=>30,n_steps=>200})
+saveConcentrations()
+simulate({method=>"ode",suffix=>"ode",t_end=>30,n_steps=>200})
+resetConcentrations()
+simulate({method=>"ssa",suffix=>"ssa",t_end=>30,n_steps=>200,seed=>1})

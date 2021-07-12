@@ -1,27 +1,25 @@
 begin model
 
 begin parameters
-  N 1.0e2
-  I0 1
-  R0 1.1
-  g  0.33
-  b  g*R0/N
+  k1 1.5
+  k2 0.1
+  k3 1.0
 end parameters
 
 begin species
-  S() N-I0
-  I() I0
+  S() 10
+  I() 10
 end species
 
 begin observables
   Molecules S S()
   Molecules I I()
-  Molecules R R()
 end observables
 
 begin reaction rules
-  R1: S + I -> I + I b
-  R2: I -> R g
+  R1: S() -> S() + S() k1
+  R2: S() + I() -> I() + I() k2
+  R3: I() -> 0 k3
 end reaction rules
 
 end model
