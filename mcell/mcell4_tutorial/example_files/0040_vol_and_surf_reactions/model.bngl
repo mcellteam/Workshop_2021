@@ -1,0 +1,126 @@
+
+## 0030-2)
+# 0040-3)
+# We add new molecule types 'a', 'c', and 't1' and 
+# keep the previous molecule type 'b'. 
+begin molecule types
+  a
+  b
+  t1
+  c
+end molecule types 
+
+
+## 0030-3)
+# 0040-4)
+# Specify the diffusion contants for the new molecule    
+# types. Molecules 'a' and 'c' diffuse in 3D space, they will 
+# get a 3D diffusion constant. On the other hand, transporter 
+# 't1' is a surface molecule and this is specified by giving it 
+# a 2D diffusion constant.
+# 
+# We also add parameters that specify how many molecules 'a' and 't1' 
+# to release and parameters that define rates of two reactions,
+# we will use these parameters later in the file.   
+begin parameters
+  # unit of diffusion constants is cm^2/s
+  MCELL_DIFFUSION_CONSTANT_3D_a 1e-6
+  MCELL_DIFFUSION_CONSTANT_3D_b 1e-6
+  MCELL_DIFFUSION_CONSTANT_3D_c 1e-6
+  MCELL_DIFFUSION_CONSTANT_2D_t1 1e-7
+  
+  # unit is the number of molecules
+  num_a_to_release 1000
+  num_b_to_release 1000
+  num_t1_to_release 700
+  
+  # unit of these bimolecular reaction rate constants is 1/M*1/s
+  rate_a_b_to_c 1e9 
+  rate_a_out_t1_to_a_in_t1 1e8 
+end parameters  
+
+
+## 0030-4)
+# 0040-5)
+# We had just one compartment before but now, 
+# we need three - the Cell (CYT), Organelle 1 membrane (O1M) and 
+# the volume inside Organelle 1 (O1V). To specify in BNGL that 
+# O1M the surface of O1V, we must specify it as a parent. 
+# Similarly, CYT is the parent O1M.
+# The diagram below shows the organization of our compartments.
+# Please not that the compartment CYT specifies a volume 
+# that does not contain the volume of O1V.
+#
+# -----------------------
+# | CYT                 |  
+# |                     |
+# |  ------- O1M -----  | 
+# |  |               |  |
+# |  |   O1V         |  |
+# |  |               |  |
+# |  ----------------|  |
+# |                     |
+# -----------------------
+#
+#
+# The format of the compartment definitions is as follows:
+# name type (3D/2D) volume [parent]
+#
+# Same as before, we are providing specific geometry object for 
+# O1V and Cell and MCell does not use the volume in this 
+# case so we just put there 1 (um^3) as volumes and 0 for surface
+# volume.
+begin compartments
+  CYT 3 1
+  O1M 2 0 CYT
+  O1V 3 1 O1M
+end compartments  
+
+
+## 0030-5)
+# 0040-6)
+# Now we say how many molecules of 'a' and 't1' to release and where.
+begin seed species
+  a@CYT num_a_to_release
+  t1@O1M num_t1_to_release
+  b@O1V num_b_to_release
+end seed species
+
+
+# 0040-7)
+# Finally, we get to define some reactions (reaction rules in the BNGL
+# terminology). 
+begin reaction rules
+
+  # 0040-8) 
+  # The first reaction rule simply says that when 'a' and 'b' react, 
+  # they change into a single molecule 'c'. The reaction rate is rate_a_b_to_c.
+  
+  a + b -> c  rate_a_b_to_c  
+
+  # 0040-9)
+  # Let's now take a look back at the seed species section.
+  # Molecules 'a' are released into the compartment Cell and molecules 'b'
+  # into Organelle_1. They are in a different compartment and simply 
+  # cannot collide with each other. 
+  #
+  # To allow 'a' and 'b' to react, we will define a reaction rule that 
+  # transports 'a' from CYT into O1V using the transporter 
+  # molecule 't1' located on Organelle_1_surface.
+  #
+  a@CYT + t1@O1M -> a@O1V + t1@O1M  rate_a_out_t1_to_a_in_t1
+  
+  # 0040-10)
+  # Side note: if we would like to define the rule in a more general way 
+  # that does not reference specific compartments, we could use compartment 
+  # classes @IN and @OUT and the rule will look like this:
+  # 
+  # a@OUT + t1 -> a@IN + t1  rate_a_out_t1_to_a_in_t1
+  #
+  # Compartment classes are supported by MCell4 but not yet by BioNetGen 
+  # so we will use the variant with specific compartments. It is equivalent 
+  # for our purposes.  
+  
+end reaction rules
+  
+  

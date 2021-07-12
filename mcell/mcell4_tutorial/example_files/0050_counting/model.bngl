@@ -1,0 +1,84 @@
+
+## 0030-2)
+## 0040-3)
+begin molecule types
+  a
+  b
+  t1
+  c
+end molecule types 
+
+
+## 0030-3)
+## 0040-4)
+begin parameters
+  # unit of diffusion constants is cm^2/s
+  MCELL_DIFFUSION_CONSTANT_3D_a 1e-6
+  MCELL_DIFFUSION_CONSTANT_3D_b 1e-6
+  MCELL_DIFFUSION_CONSTANT_3D_c 1e-6
+  MCELL_DIFFUSION_CONSTANT_2D_t1 1e-7
+  
+  # unit is the number of molecules
+  num_a_to_release 1000
+  num_b_to_release 1000
+  num_t1_to_release 700
+  
+  # unit of these bimolecular reaction rate constants is 1/M*1/s
+  rate_a_b_to_c 1e9 
+  rate_a_out_t1_to_a_in_t1 1e8 
+end parameters  
+
+
+## 0030-4)
+## 0040-5)
+begin compartments
+  CYT 3 1
+  O1M 2 0 CYT
+  O1V 3 1 O1M
+end compartments  
+
+
+## 0030-5)
+## 0040-6)
+begin seed species
+  a@CYT num_a_to_release
+  t1@O1M num_t1_to_release
+  b@O1V num_b_to_release
+end seed species
+
+
+## 0040-7)
+begin reaction rules
+
+  ## 0040-8) 
+  a + b -> c  rate_a_b_to_c  
+
+  ## 0040-9)
+  a@CYT + t1@O1M -> a@O1V + t1@O1M  rate_a_out_t1_to_a_in_t1
+
+end reaction rules
+
+
+# 0050-2)
+# The main improvement we will do in this tutorial section is that we will count    
+# the molecules in different compartments. 
+# The BNGL format to specify this is:
+# Molecules name pattern {, pattern}
+#
+# Field name is the name of the observable and it is followed by a list patterns to 
+# be counted. Note that the name of the observable can be the same as the species name. 
+# In our case, we will list the species name as the pattern. The pattern may include 
+# a compartment name.  
+# Since the molecule 'a' can move from compartment Cell into Organelle_1, we will 
+# be counting all of them and also in specific compartments. 
+# Molecules 'b', 'c', and 't1' are only in or on Organelle_1, so a single  
+# observable is sufficient for each of them
+begin observables
+  Molecules a a
+  Molecules a_in_cyt a@CYT
+  Molecules a_in_o1v a@O1V
+  Molecules b b
+  Molecules c c
+  Molecules t1 t1
+end observables  
+  
