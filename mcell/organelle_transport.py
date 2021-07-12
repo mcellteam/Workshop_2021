@@ -24,7 +24,7 @@ if len(sys.argv) == 3 and sys.argv[1] == '-seed':
 else:
     SEED = 1
 
-bngl_file = os.path.join('..', 'bionetgen', 'organelle_transport.bngl')
+bngl_file = os.path.join('..', 'bionetgen', 'pybionetgen', 'organelle_transport.bngl')
 
 ITERATIONS = 10000
 TIME_STEP = 1e-6 
