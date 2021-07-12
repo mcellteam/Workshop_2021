@@ -1,0 +1,106 @@
+
+## 0030-2)
+## 0040-3)
+begin molecule types
+  a
+  b
+  t1
+  c
+  # 0060-5)
+  # We will need two more molecule types 'd' and 't2'
+  d
+  t2
+end molecule types 
+
+
+## 0030-3)
+## 0040-4)
+begin parameters
+  # unit of diffusion constants is cm^2/s
+  MCELL_DIFFUSION_CONSTANT_3D_a 1e-6
+  MCELL_DIFFUSION_CONSTANT_3D_b 1e-6
+  MCELL_DIFFUSION_CONSTANT_3D_c 1e-6
+  MCELL_DIFFUSION_CONSTANT_2D_t1 1e-7
+  
+  ## 0060-6)
+  MCELL_DIFFUSION_CONSTANT_3D_d 1e-6
+  MCELL_DIFFUSION_CONSTANT_2D_t2 1e-8
+    
+  # unit is the number of molecules
+  num_a_to_release 1000
+  num_b_to_release 1000
+  num_t1_to_release 700
+
+  ## 0060-7)
+  num_t2_to_release 700
+  
+  # unit of these bimolecular reaction rate constants is 1/M*1/s
+  rate_a_b_to_c 1e9 
+  rate_a_out_t1_to_a_in_t1 1e8
+  
+  ## 0060-8)
+  rate_c_in_t1_to_c_out_t1 1e8
+  rate_c_out_t2_to_d_in_t2 1e8
+   
+end parameters  
+
+
+## 0030-4)
+## 0040-5)
+begin compartments
+  CYT 3 1
+  O1M 2 0 CYT
+  O1V 3 1 O1M
+
+  ## 0060-9)
+  O2M 2 0 CYT
+  O2V 3 1 O2M
+end compartments  
+
+
+## 0030-5)
+## 0040-6)
+begin seed species
+  a@CYT num_a_to_release
+  t1@O1M num_t1_to_release
+  b@O1V num_b_to_release
+  
+  ## 0060-10)
+  t2@O2M num_t2_to_release
+  
+end seed species
+
+
+## 0040-7)
+begin reaction rules
+
+  ## 0040-8) 
+  a + b -> c  rate_a_b_to_c  
+
+  ## 0040-9)
+  a@CYT + t1@O1M -> a@O1V + t1@O1M  rate_a_out_t1_to_a_in_t1
+  
+  ## 0060-11)
+  c@O1V + t1@O1M -> c@CYT + t1@O1M  rate_c_in_t1_to_c_out_t1
+  
+  c@CYT + t2@O2M -> d@O2V + t2@O2M  rate_c_out_t2_to_d_in_t2
+    
+end reaction rules
+
+
+## 0050-2)
+begin observables
+  Molecules a a
+  Molecules a_in_cyt a@CYT
+  Molecules a_in_o1v a@O1V
+  Molecules b b
+  Molecules c c
+  Molecules t1 t1
+  
+  ## 0060-12)
+  Molecules c_in_o1v c@O1V
+  Molecules c_in_cyt c@CYT
+  Molecules d d
+   
+end observables  
+  

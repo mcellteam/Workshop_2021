@@ -1,0 +1,57 @@
+
+# 0030-3)
+# First we define a molecule type. Let's call it 'b'. 
+# Molecule types in BNGL are used to define species.
+begin molecule types
+  b
+end molecule types 
+
+
+# 0030-4)
+# Now, we need to specify the b's diffusion constant. 
+# BNGL has no concept of diffusion, so we have to use 
+# an MCell extension that uses a reserved parameter name 
+# prefix, in this case MCELL_DIFFUSION_CONSTANT_3D_
+# that says that the molecule is a volume molecule and
+# the parameter value is the diffusion constant in cm^2/s.
+# 
+# One more parameter says how many 'b' molecules we are 
+# going to release. 
+begin parameters
+  MCELL_DIFFUSION_CONSTANT_3D_b 1e-6
+  
+  num_b_to_release 1000
+end parameters  
+
+
+# 0030-5)
+# To use BNGL to specify the initial release of 
+# 'b', we must say where it will be released.
+# BNGL uses the concept of compartments where a compartment 
+# can be either a volume or a surface. 
+# We have just one volume compartment here. 
+#
+# The format of the compartment definitions is as follows:
+# name type (3D/2D) volume [parent]
+#
+# The compartment's parent is optional, and since we 
+# are providing the geometry object for O1V (organelle 1), 
+# MCell does not use the volume so we just put 
+# there 1 (um^3) for now.
+begin compartments
+  O1V 3 1
+end compartments  
+
+
+# 0030-6)
+# Finally, we say how many molecules of b to release and where.
+# The format is:
+# species[@compartment] number_to_release
+# 
+# We use 'b' as species now, although we declared it as molecule
+# type. BNGL allows to define complex species composed of multiple
+# molecule types but let's not go into this right here.
+# Our species are simple and are composed of a single molecule type.    
+begin seed species
+  b@O1V num_b_to_release
+end seed species
