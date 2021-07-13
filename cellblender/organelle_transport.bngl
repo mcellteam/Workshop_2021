@@ -1,0 +1,104 @@
+## title: organelle_transport_abcd.bngl
+#  description: Simple model of transport involving two cell organelles. This is the model 
+#               that was used in the CellBlender tutorial.
+begin parameters
+  NA_um3 6.02e8 # Avogadro’s number*L/um3
+  d 0.01 # [um] Effective membrane thickness used to compute membrane volume
+  vol_CYT 1 # [um^3] Volume of cytoplasm
+  vol_O1M 1*d # [um^3] Effective volume of organelle 1 membrane
+  vol_O1V 0.133 # [um^3] Effective volume of organelle 1
+  vol_O2M 1*d     # [um^3] Effective volume of organelle 2 membrane
+  vol_O2V 0.0335 # [um^3] Effective volume of organelle 2
+    
+  # Handling of unit conversion for MCell 
+  VOL_RXN 1 # Value 1 is used when BioNetGen loads this file 
+  MCELL_REDEFINE_VOL_RXN NA_um3 # When MCell loads this file VOL_RXN is NA_um3
+    
+  kp_AB 1e9/NA_um3*VOL_RXN # BioNetGen: 1/M*1/s -> um^3/s, MCell: 1/M*1/s -> um^3/s -> 1/M*1/s      
+  kp_AT1 1e8/NA_um3*VOL_RXN
+  km_AT1 10
+  k_AT1trans 1e5
+  kp_CT1 1e8/NA_um3*VOL_RXN
+  km_CT1 10
+  k_CT1trans 1e5
+  kp_CT2 1e8/NA_um3*VOL_RXN
+  km_CT2 10
+  k_DT2trans 1e5
+  
+  # MCell requires diffusion constants to be defined
+  D_VOL 1e-6 # cm^2/s
+  D_SURF 1e-8 # cm^2/s
+  MCELL_DIFFUSION_CONSTANT_3D_A D_VOL 
+  MCELL_DIFFUSION_CONSTANT_3D_B D_VOL
+  MCELL_DIFFUSION_CONSTANT_3D_C D_VOL
+  MCELL_DIFFUSION_CONSTANT_3D_D D_VOL
+  MCELL_DIFFUSION_CONSTANT_2D_T1 D_SURF
+  MCELL_DIFFUSION_CONSTANT_2D_AT1 D_SURF
+  MCELL_DIFFUSION_CONSTANT_2D_CT1 D_SURF
+  MCELL_DIFFUSION_CONSTANT_2D_T2 D_SURF
+  MCELL_DIFFUSION_CONSTANT_2D_CT2 D_SURF
+end parameters
+
+begin compartments
+  CYT  3  vol_CYT  
+  O1M  2  vol_O1M   CYT
+  O1V  3  vol_O1V   O1M
+  O2M  2  vol_O2M   CYT
+  O2V  3  vol_O2V   O2M
+end compartments
+
+begin molecule types
+  A()
+  B()
+  C()
+  D()
+  T1()
+  AT1()
+  CT1()
+  T2()
+  CT2()
+end molecule types
+
+begin seed species
+  A@CYT 1200
+  B@O1V 1000
+  T1@O1M 700
+  T2@O2M 700
+end seed species
+
+begin observables
+  Molecules A A()
+  Molecules B B()
+  Molecules C C()
+  Molecules D D()
+end observables
+
+begin reaction rules
+
+  # A in cytoplasm binds T1 on organelle 1 (reversibly)
+  A@CYT + T1@O1M <-> AT1@O1M kp_AT1, km_AT1
+
+  # A bound to T1 moves to interior of organelle 1 
+  AT1@O1M -> T1@O1M + A@O1V k_AT1trans
+
+  # A and B in interior of organelle 1 form a complex C
+  A@O1V + B@O1V  -> C@O1V kp_AB
+
+  # C in interior of organelle 1 binds to T1 (reversibly)
+  C@O1V + T1@O1M <-> CT1@O1M kp_CT1, km_CT1
+
+  # C bound to T1 transports to cytoplasm
+  CT1@O1M -> T1@O1M + C@CYT k_CT1trans
+
+  # C in cytoplasm binds to T2 on orgenelle 2 (reversibly)
+  C@CYT + T2@O2M <-> CT2@O2M kp_CT2, km_CT2
+
+  # C bound to T2 moves to interior of organelle 2 and becomes D
+  CT2@O2M -> T2@O2M + D@O2V k_DT2trans
+
+end reaction rules
+
+generate_network({overwrite=>1})
+writeSBML()  
+simulate({method=>"ssa",t_start=>0,t_end=>.01,n_steps=>1000})
+
