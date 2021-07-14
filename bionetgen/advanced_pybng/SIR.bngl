@@ -1,0 +1,33 @@
+# Description: Simple SIR model of infection
+# Author: James R. Faeder
+# Date: 21June2020
+begin model
+begin parameters
+  N 100    # Total number of individuals
+  I0  1    # Initial number infected
+  R0 2.5
+  g 0.33     # Recovery rate in units 1/time
+  b g*R0/N  # Infection rate in units 1/time 1/individual
+end parameters
+begin seed species
+  S   N-I0
+  I   I0
+  R   0
+end seed species
+begin observables
+  Molecules S S()
+  Molecules I I()
+  Molecules R R()
+end observables
+begin reaction rules
+  S + I -> I + I b
+  I -> R g
+end reaction rules
+end model
+# Actions
+#saveConcentrations()
+generate_network()
+writeSBML()
+simulate({method=>"ode",t_end=>30,n_steps=>200})
+#resetConcentrations()
+#simulate({method=>"ssa",suffix=>"ssa",t_end=>30,n_steps=>200,seed=>1})
