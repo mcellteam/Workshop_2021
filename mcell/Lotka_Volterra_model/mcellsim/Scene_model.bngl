@@ -1,0 +1,20 @@
+# WARNING: This is an automatically generated file and will be overwritten
+#          by CellBlender on the next model export.
+begin parameters
+end parameters
+
+begin molecule types
+    prey
+    predator
+end molecule types
+
+begin reaction rules
+    prey -> prey + prey 1.29e5
+    predator + prey -> predator + predator 1e8
+    predator -> 0 1.3e5
+end reaction rules
+
+begin observables
+    Species prey_World prey
+    Species predator_World predator
+end observables
