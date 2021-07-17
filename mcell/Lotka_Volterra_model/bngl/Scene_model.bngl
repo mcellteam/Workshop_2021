@@ -1,0 +1,32 @@
+# WARNING: This is an automatically generated file and will be overwritten
+#          by CellBlender on the next model export.
+begin model
+
+begin parameters
+    Na_V  15e5
+    k1 1.29e5
+    k2 1e8/Na_V #  k2/Na*V
+    k3 1.3e5
+    prey_0 1000
+    predator_0 1000
+end parameters
+
+begin seed species
+    prey    prey_0
+    predator    predator_0
+end seed species
+
+begin reaction rules
+    prey -> prey + prey k1
+    predator + prey -> predator + predator k2
+    predator -> 0 k3
+end reaction rules
+
+begin observables
+    Species prey_World prey
+    Species predator_World predator
+end observables
+
+end model
+
+simulate({method=>"ode", t_end=>5e-4, n_steps=>1000})
